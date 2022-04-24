@@ -15,10 +15,12 @@ void Leg::init(int hip_pin, int knee_pin, int foot_pin, const int calib[]) {
     _hip_bkd = calib[1];
     _knee_lift = calib[2];
     _knee_lower = calib[3];
-    _foot_lower = calib[4];
+    _foot_lift = calib[4];
     _foot_lower = calib[5];
 
-    
+    hip_bkd();
+    knee_lift();
+    foot_lift();
 }
 
 void Leg::set_hip(int angle) {

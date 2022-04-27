@@ -1,5 +1,7 @@
 #include "Leg.h"
 
+int frange(float f, int lo, int hi);
+
 Leg::Leg() {
     _hip = Servo();
     _knee = Servo();
@@ -17,22 +19,23 @@ void Leg::init(struct Leg_pins pins, struct Leg_seg_lims lims[NUM_SEGS]) {
     _knee_lift = lims[KNEE].hi;
     _foot_lower = lims[FOOT].lo;
     _foot_lift = lims[FOOT].hi;
-
-    hip_bkd();
-    knee_lift();
-    foot_lift();
 }
 
-void Leg::set_hip(int angle) {
-    _hip.write(angle);
-}
-
-void Leg::set_knee(int angle) {
-    _knee.write(angle);
-}
-
-void Leg::set_foot(int angle) {
-    _foot.write(angle);
+void Leg::set(int seg, float set) {
+    switch (seg) {
+        case HIP: {
+            _hip.write(frange(set, _hip_bkd, _hip_fwd));
+            break;
+        }
+        case KNEE: {
+            _knee.write(frange(set, _knee_lower, _knee_lift));
+            break;
+        }
+        case FOOT: {
+            _foot.write(frange(set, _foot_lower, _foot_lift));
+            break;
+        }
+    }
 }
 
 void Leg::hip_fwd() {
@@ -60,19 +63,31 @@ void Leg::foot_lower() {
 }
 
 void Leg::hip_relax() {
-    _hip.write(abs(_hip_bkd - _hip_fwd)/2);
+    set(HIP, 0.5);
 }
 
 void Leg::knee_relax() {
-    _knee.write(abs(_knee_lift - _knee_lower)/2);
+    set(KNEE, 0.5);
 }
 
 void Leg::foot_relax() {
-    _foot.write(abs(_foot_lift - _foot_lower)/2);
+    set(FOOT, 0.5);
 }
 
 void Leg::relax() {
     hip_relax();
     knee_relax();
     foot_relax();
+}
+
+
+int frange(float f, int lo, int hi) {
+    float range = (float)hi - (float)lo;
+
+    if (f >= 1.0f) return hi;
+    if (f <= 0.0f) return lo;
+    
+    float prop = f*range;
+    return (int)(lo + prop);
+    
 }

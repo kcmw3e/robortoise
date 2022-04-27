@@ -40,9 +40,7 @@ class Leg {
     Leg();
     void init(struct Leg_pins pins, struct Leg_seg_lims lims[NUM_SEGS]);
 
-    void set_hip(int angle);
-    void set_knee(int angle);
-    void set_foot(int angle);
+    void set(int seg, float set);
 
     void hip_fwd();
     void hip_bkd();

@@ -93,4 +93,4 @@ struct Leg_seg_lims lims[][NUM_SEGS] = {
         { .lo = BR_KNEE_LO, .hi = BR_KNEE_HI },    // knee
         { .lo = BR_FOOT_LO, .hi = BR_FOOT_HI },    // foot
     },
-}
+};

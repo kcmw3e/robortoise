@@ -36,7 +36,7 @@ enum LIMS {
 
     BL_HIP_BKD = 90,
     BL_HIP_FWD = 30,
-    BL_KNEE_LO = 40,
+    BL_KNEE_LO = 50,
     BL_KNEE_HI = 150,
     BL_FOOT_LO = 30,
     BL_FOOT_HI = 130,

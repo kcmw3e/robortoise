@@ -6,17 +6,17 @@ Leg::Leg() {
     _foot = Servo();
 }
 
-void Leg::init(int hip_pin, int knee_pin, int foot_pin, const int calib[]) {
-    _hip.attach(hip_pin);
-    _knee.attach(knee_pin);
-    _foot.attach(foot_pin);
+void Leg::init(struct Leg_pins pins, struct Leg_seg_lims lims[NUM_SEGS]) {
+    _hip.attach(pins.hip_pin);
+    _knee.attach(pins.knee_pin);
+    _foot.attach(pins.foot_pin);
 
-    _hip_fwd = calib[0];
-    _hip_bkd = calib[1];
-    _knee_lift = calib[2];
-    _knee_lower = calib[3];
-    _foot_lift = calib[4];
-    _foot_lower = calib[5];
+    _hip_bkd = lims[HIP].lo;
+    _hip_fwd = lims[HIP].hi;
+    _knee_lower = lims[KNEE].lo;
+    _knee_lift = lims[KNEE].hi;
+    _foot_lower = lims[FOOT].lo;
+    _foot_lift = lims[FOOT].hi;
 
     hip_bkd();
     knee_lift();

@@ -4,6 +4,25 @@
 #include <Arduino.h>
 #include <Servo.h>
 
+#define NUM_SEGS 3
+
+enum SEG_INDEX {
+    HIP = 0,
+    KNEE = 1,
+    FOOT = 2,
+};
+
+struct Leg_seg_lims {
+    int lo;
+    int hi;
+};
+
+struct Leg_pins {
+    int hip_pin;
+    int knee_pin;
+    int foot_pin;
+};
+
 class Leg {
     private:
         Servo _hip;
@@ -19,7 +38,7 @@ class Leg {
 
     public:
     Leg();
-    void init(int hip_pin, int knee_pin, int foot_pin, const int calib[]);
+    void init(struct Leg_pins pins, struct Leg_seg_lims lims[NUM_SEGS]);
 
     void set_hip(int angle);
     void set_knee(int angle);

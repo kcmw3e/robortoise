@@ -31,3 +31,28 @@ void Leg::setall(float hipset, float kneeset, float footset) {
     set(KNEE, kneeset);
     set(FOOT, footset);
 }
+
+void Leg::fwd_hip() {
+    set(HIP, 1.0f);
+}
+
+void Leg::bkd_hip() {
+    set(HIP, 0.0f);
+}
+
+void Leg::lift_knee() {
+    set(KNEE, 1.0f);
+}
+
+void Leg::lower_knee() {
+    set(KNEE, 0.0f);
+}
+
+void Leg::lift_foot() {
+    set(FOOT, 1.0f);
+}
+
+void Leg::lower_foot() {
+    set(FOOT, 0.0f);
+}
+

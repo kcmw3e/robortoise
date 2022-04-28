@@ -45,6 +45,13 @@ class Leg {
 
     void set(seg_index_t seg, float set);
     void setall(float hipset, float kneeset, float footset);
+
+    void Leg::fwd_hip();
+    void Leg::bkd_hip();
+    void Leg::lift_knee();
+    void Leg::lower_knee();
+    void Leg::lift_foot();
+    void Leg::lower_foot();
 };
 
 #endif // ROBORTOISE_LEG_H

@@ -50,7 +50,13 @@ class Quad {
         void set(leg_index_t leg_i, seg_index_t seg_i, float set);
         void stand();
         void belly();
-        void lean(leg_index_t noload);
+        void up();
+        void crouch();
+        void lean(leg_index_t noload_i);
+        void step_fwd(leg_index_t step_leg_i);
+        void step_bkd(leg_index_t step_leg_i);
+        void step(leg_index_t step_leg_i, float step);
+        void move(leg_index_t step_leg_i, float step);
 };
 
 #endif // ROBORTOISE_QUAD_H

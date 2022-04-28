@@ -45,8 +45,8 @@ void Quad::set(leg_index_t leg_i, seg_index_t seg_i, float set) {
 void Quad::stand() {
     for (int i = 0; i < NUM_LEGS; i++) {
         Leg leg = _get_leg((leg_index_t)i);
-        leg.set(KNEE, 0.0f);
         leg.set(HIP, 0.5f);
+        leg.set(KNEE, 0.0f);
         leg.set(FOOT, 0.5f);
     }
 }
@@ -54,29 +54,44 @@ void Quad::stand() {
 void Quad::belly() {
     for (int i = 0; i < NUM_LEGS; i++) {
         Leg leg = _get_leg((leg_index_t)i);
-        leg.set(KNEE, 1.0f);
         leg.set(HIP, 0.5f);
+        leg.set(KNEE, 1.0f);
         leg.set(FOOT, 0.0f);
     }
 }
 
-void Quad::lean(leg_index_t noload) {
+void Quad::up() {
+    for (int i = 0; i < NUM_LEGS; i++) {
+        Leg leg = _get_leg((leg_index_t)i);
+        leg.set(KNEE, 0.0f);
+        leg.set(FOOT, 0.5f);
+    }
+}
+
+void Quad::crouch() {
+    for (int i = 0; i < NUM_LEGS; i++) {
+        Leg leg = _get_leg((leg_index_t)i);
+        leg.set(HIP, 0.5f);
+    }
+}
+
+void Quad::lean(leg_index_t noload_i) {
     Leg* adj;
     Leg* caty;
-    switch (noload) {
+    switch (noload_i) {
         case FL: {
             adj = &_leg_FR;
             caty = &_leg_BR;
             break;
         }
         case FR: {
-            adj = &_leg_BL;
-            caty = &_leg_FL;
+            adj = &_leg_FL;
+            caty = &_leg_BL;
             break;
         }
         case BL: {
-            adj = &_leg_FR;
-            caty = &_leg_BR;
+            adj = &_leg_BR;
+            caty = &_leg_FR;
             break;
         }
         case BR: {
@@ -87,8 +102,50 @@ void Quad::lean(leg_index_t noload) {
     }
 
     adj->set(FOOT, 1.0f);
-    adj->set(KNEE, 0.3f);
+    adj->set(KNEE, 0.0f);
 
     caty->set(FOOT, 1.0f);
-    caty->set(KNEE, 0.5f);
+    caty->set(KNEE, 0.85f);
+}
+
+void Quad::step_fwd(leg_index_t step_leg_i) {
+    Leg step_leg = _get_leg(step_leg_i);
+    lean(step_leg_i);
+    delay(400);
+    step_leg.lift_knee();
+    delay(150);
+    step_leg.fwd_hip();
+    delay(200);
+    step_leg.lower_knee();
+}
+
+void Quad::step_bkd(leg_index_t step_leg_i) {
+    Leg step_leg = _get_leg(step_leg_i);
+    lean(step_leg_i);
+    delay(400);
+    step_leg.lift_knee();
+    delay(150);
+    step_leg.bkd_hip();
+    delay(200);
+    step_leg.lower_knee();
+}
+
+void Quad::step(leg_index_t step_leg_i, float step) {
+    Leg step_leg = _get_leg(step_leg_i);
+
+    lean(step_leg_i);
+    delay(500);
+    step_leg.lift_knee();
+    delay(150);
+    step_leg.set(HIP, step);
+    delay(500);
+    step_leg.lower_knee();
+    delay(500);
+    up();
+}
+
+void Quad::move(leg_index_t step_leg_i, float step) {
+    Leg step_leg = _get_leg(step_leg_i);
+
+    step_leg.set(HIP, step);
 }

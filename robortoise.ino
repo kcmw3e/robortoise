@@ -23,18 +23,55 @@ void loop() {
     
     if (go) {
         robortoise.stand();
-        delay(2000);
+        delay(300);
+
+        robortoise.set(FL, KNEE, 1.0f);
+        robortoise.set(BR, KNEE, 1.0f);
+        delay(150);
+        robortoise.set(FL, HIP, 0.8f);
+        robortoise.set(BR, HIP, 0.8f);
+        delay(150);
+        robortoise.set(FL, KNEE, 0.0f);
+        robortoise.set(BR, KNEE, 0.0f);
+        delay(300);
+        robortoise.set(FR, KNEE, 0.2f);
+        robortoise.set(BL, KNEE, 0.2f);
+        delay(300);
         robortoise.stand();
-        robortoise.lean(FL);
-        delay(2000);
+        delay(200);
+        
+        robortoise.set(FR, KNEE, 1.0f);
+        robortoise.set(BL, KNEE, 1.0f);
+        delay(150);
+        robortoise.set(FR, HIP, 0.8f);
+        robortoise.set(BL, HIP, 0.8f);
+        delay(150);
+        robortoise.set(FR, KNEE, 0.0f);
+        robortoise.set(BL, KNEE, 0.0f);
+        delay(300);
+        robortoise.set(FL, KNEE, 0.2f);
+        robortoise.set(BR, KNEE, 0.2f);
+        delay(300);
         robortoise.stand();
-        robortoise.lean(FR);
-        delay(2000);
-        robortoise.stand();
-        robortoise.lean(BL);
-        delay(2000);
-        robortoise.stand();
-        robortoise.lean(BR);
-        delay(2000);
+        delay(200);
+
+        // robortoise.step(FL, 0.5f);
+        // delay(500);
+        // robortoise.step(BL, 0.5f);
+        // delay(500);
+        // robortoise.step(BR, 1.0f);
+        // delay(500);
+        // robortoise.step(FR, 0.0f);
+        // delay(500);
+
+        // robortoise.step(FR, 1.0f);
+        // delay(1000);
+
+        // robortoise.move(FL, 0.0f);
+        // robortoise.move(FR, 0.5f);
+        // robortoise.move(BL, 0.0f);
+        // robortoise.move(BR, 0.5f);
+        // robortoise.up();
+        // delay(5000);
     }
 }

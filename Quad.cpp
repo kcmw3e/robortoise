@@ -42,6 +42,24 @@ void Quad::set(leg_index_t leg_i, seg_index_t seg_i, float set) {
     leg.set(seg_i, set);
 }
 
+void Quad::stand() {
+    for (int i = 0; i < NUM_LEGS; i++) {
+        Leg leg = _get_leg((leg_index_t)i);
+        leg.set(KNEE, 0.0f);
+        leg.set(HIP, 0.5f);
+        leg.set(FOOT, 0.5f);
+    }
+}
+
+void Quad::belly() {
+    for (int i = 0; i < NUM_LEGS; i++) {
+        Leg leg = _get_leg((leg_index_t)i);
+        leg.set(KNEE, 1.0f);
+        leg.set(HIP, 0.5f);
+        leg.set(FOOT, 0.0f);
+    }
+}
+
 void Quad::lean(leg_index_t noload) {
     Leg* adj;
     Leg* caty;
@@ -73,22 +91,4 @@ void Quad::lean(leg_index_t noload) {
 
     caty->set(FOOT, 1.0f);
     caty->set(KNEE, 0.5f);
-}
-
-void Quad::stand() {
-    for (int i = 0; i < NUM_LEGS; i++) {
-        Leg leg = _get_leg((leg_index_t)i);
-        leg.set(KNEE, 0.0f);
-        leg.set(HIP, 0.5f);
-        leg.set(FOOT, 0.5f);
-    }
-}
-
-void Quad::belly() {
-    for (int i = 0; i < NUM_LEGS; i++) {
-        Leg leg = _get_leg((leg_index_t)i);
-        leg.set(KNEE, 1.0f);
-        leg.set(HIP, 0.5f);
-        leg.set(FOOT, 0.0f);
-    }
 }

@@ -48,9 +48,9 @@ class Quad {
         Quad();
         void init(quad_pins_t pins, quad_lims_t lims);
         void set(leg_index_t leg_i, seg_index_t seg_i, float set);
-        void lean(leg_index_t noload);
         void stand();
         void belly();
+        void lean(leg_index_t noload);
 };
 
 #endif // ROBORTOISE_QUAD_H

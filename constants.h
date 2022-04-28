@@ -1,96 +1,150 @@
-#include "Quad.h"
+#include <Arduino.h>
+
+#include "Seg.h"
 #include "Leg.h"
+#include "Quad.h"
 
 enum LEG_PINS {
-    HIP_FL = 27,
-    KNEE_FL = 25,
-    FOOT_FL = 23,
+    FL_HIP_PIN = 0,
+    FL_KNEE_PIN = 1,
+    FL_FOOT_PIN = 2,
     
-    HIP_FR = 30,
-    KNEE_FR = 26,
-    FOOT_FR = 28,
+    FR_HIP_PIN = 3,
+    FR_KNEE_PIN = 4,
+    FR_FOOT_PIN = 5,
+    
+    BL_HIP_PIN = 6,
+    BL_KNEE_PIN = 7,
+    BL_FOOT_PIN = 8,
+    
+    BR_HIP_PIN = 9,
+    BR_KNEE_PIN = 10,
+    BR_FOOT_PIN = 11,
+};
 
-    HIP_BL = 52,
-    KNEE_BL = 50,
-    FOOT_BL = 48,
+leg_pins_t FL_pins = {
+    .hip_pin = FL_HIP_PIN,
+    .knee_pin = FL_KNEE_PIN,
+    .foot_pin = FL_FOOT_PIN,
+};
 
-    HIP_BR = 49,
-    KNEE_BR = 51,
-    FOOT_BR = 53,
+leg_pins_t FR_pins = {
+    .hip_pin = FR_HIP_PIN,
+    .knee_pin = FR_KNEE_PIN,
+    .foot_pin = FR_FOOT_PIN,
+};
+
+leg_pins_t BL_pins = {
+    .hip_pin = BL_HIP_PIN,
+    .knee_pin = BL_KNEE_PIN,
+    .foot_pin = BL_FOOT_PIN,
+};
+
+leg_pins_t BR_pins = {
+    .hip_pin = BR_HIP_PIN,
+    .knee_pin = BR_KNEE_PIN,
+    .foot_pin = BR_FOOT_PIN,
 };
 
 enum LIMS {
-    FL_HIP_BKD = 150,
-    FL_HIP_FWD = 90,
-    FL_KNEE_LO = 120,
-    FL_KNEE_HI = 40,
-    FL_FOOT_LO = 120,
-    FL_FOOT_HI = 45,
+    FL_HIP_LO = 450,
+    FL_HIP_HI = 300,
+    FL_KNEE_LO = 370,
+    FL_KNEE_HI = 170,
+    FL_FOOT_LO = 210,
+    FL_FOOT_HI = 380,
 
-    FR_HIP_BKD = 140,
-    FR_HIP_FWD = 180,
-    FR_KNEE_LO = 70,
-    FR_KNEE_HI = 160,
-    FR_FOOT_LO = 30,
-    FR_FOOT_HI = 140,
+    FR_HIP_LO = 405,
+    FR_HIP_HI = 500,
+    FR_KNEE_LO = 265,
+    FR_KNEE_HI = 450,
+    FR_FOOT_LO = 400,
+    FR_FOOT_HI = 230,
 
-    BL_HIP_BKD = 90,
-    BL_HIP_FWD = 30,
-    BL_KNEE_LO = 50,
-    BL_KNEE_HI = 150,
-    BL_FOOT_LO = 30,
-    BL_FOOT_HI = 130,
+    BL_HIP_LO = 350,
+    BL_HIP_HI = 170,
+    BL_KNEE_LO = 260,
+    BL_KNEE_HI = 440,
+    BL_FOOT_LO = 390,
+    BL_FOOT_HI = 250,
 
-    BR_HIP_BKD = 90,
-    BR_HIP_FWD = 155,
-    BR_KNEE_LO = 130,
-    BR_KNEE_HI = 30,
-    BR_FOOT_LO = 130,
-    BR_FOOT_HI = 35,
+    BR_HIP_LO = 300,
+    BR_HIP_HI = 445,
+    BR_KNEE_LO = 380,
+    BR_KNEE_HI = 210,
+    BR_FOOT_LO = 190,
+    BR_FOOT_HI = 370,
 };
 
-struct Leg_pins pins[] = {
-    { // Leg_FL
-        .hip_pin = HIP_FL,
-        .knee_pin = KNEE_FL,
-        .foot_pin = FOOT_FL,
+leg_lims_t FL_lims = {
+    .hip_lims = {
+        .lo = FL_HIP_LO,
+        .hi = FL_HIP_HI,
     },
-    { // Leg_FR
-        .hip_pin = HIP_FR,
-        .knee_pin = KNEE_FR,
-        .foot_pin = FOOT_FR,
+    .knee_lims = {
+        .lo = FL_KNEE_LO,
+        .hi = FL_KNEE_HI,
     },
-    { // Leg_BL
-        .hip_pin = HIP_BL,
-        .knee_pin = KNEE_BL,
-        .foot_pin = FOOT_BL,
+    .foot_lims = {
+        .lo = FL_FOOT_LO,
+        .hi = FL_FOOT_HI,
     },
-    { // Leg_BR
-        .hip_pin = HIP_BR,
-        .knee_pin = KNEE_BR,
-        .foot_pin = FOOT_BR,
-    }
+};
+leg_lims_t FR_lims = {
+    .hip_lims = {
+        .lo = FR_HIP_LO,
+        .hi = FR_HIP_HI,
+    },
+    .knee_lims = {
+        .lo = FR_KNEE_LO,
+        .hi = FR_KNEE_HI,
+    },
+    .foot_lims = {
+        .lo = FR_FOOT_LO,
+        .hi = FR_FOOT_HI,
+    },
 };
 
-struct Leg_seg_lims lims[][NUM_SEGS] = {
-    {   // Leg_FL
-        { .lo = FL_HIP_BKD, .hi = FL_HIP_FWD },    // hip
-        { .lo = FL_KNEE_LO, .hi = FL_KNEE_HI },    // knee
-        { .lo = FL_FOOT_LO, .hi = FL_FOOT_HI },    // foot
+leg_lims_t BL_lims = {
+    .hip_lims = {
+        .lo = BL_HIP_LO,
+        .hi = BL_HIP_HI,
     },
-    {   // Leg_FR
-        { .lo = FR_HIP_BKD, .hi = FR_HIP_FWD },    // hip
-        { .lo = FR_KNEE_LO, .hi = FR_KNEE_HI },    // knee
-        { .lo = FR_FOOT_LO, .hi = FR_FOOT_HI },    // foot
+    .knee_lims = {
+        .lo = BL_KNEE_LO,
+        .hi = BL_KNEE_HI,
     },
-    {   // Leg_BL
-        { .lo = BL_HIP_BKD, .hi = BL_HIP_FWD },    // hip
-        { .lo = BL_KNEE_LO, .hi = BL_KNEE_HI },    // knee
-        { .lo = BL_FOOT_LO, .hi = BL_FOOT_HI },    // foot
+    .foot_lims = {
+        .lo = BL_FOOT_LO,
+        .hi = BL_FOOT_HI,
     },
-    {   // Leg_BR
-        { .lo = BR_HIP_BKD, .hi = BR_HIP_FWD },    // hip
-        { .lo = BR_KNEE_LO, .hi = BR_KNEE_HI },    // knee
-        { .lo = BR_FOOT_LO, .hi = BR_FOOT_HI },    // foot
+};
+
+leg_lims_t BR_lims = {
+    .hip_lims = {
+        .lo = BR_HIP_LO,
+        .hi = BR_HIP_HI,
     },
+    .knee_lims = {
+        .lo = BR_KNEE_LO,
+        .hi = BR_KNEE_HI,
+    },
+    .foot_lims = {
+        .lo = BR_FOOT_LO,
+        .hi = BR_FOOT_HI,
+    },
+};
+
+quad_pins_t pins = {
+    .FL_pins = FL_pins,
+    .FR_pins = FR_pins,
+    .BL_pins = BL_pins,
+    .BR_pins = BR_pins,
+};
+
+quad_lims_t lims = {
+    .FL_lims = FL_lims,
+    .FR_lims = FR_lims,
+    .BL_lims = BL_lims,
+    .BR_lims = BR_lims,
 };

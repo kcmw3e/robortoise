@@ -2,58 +2,49 @@
 #define ROBORTOISE_LEG_H
 
 #include <Arduino.h>
-#include <Servo.h>
+
+#include "utils.h"
+#include "Seg.h"
 
 #define NUM_SEGS 3
 
-enum SEG_INDEX {
+enum seg_index {
     HIP = 0,
     KNEE = 1,
     FOOT = 2,
 };
+typedef enum seg_index seg_index_t;
 
-struct Leg_seg_lims {
-    int lo;
-    int hi;
+struct leg_pins {
+    uint8_t hip_pin;
+    uint8_t knee_pin;
+    uint8_t foot_pin;
 };
+typedef struct leg_pins leg_pins_t;
 
-struct Leg_pins {
-    int hip_pin;
-    int knee_pin;
-    int foot_pin;
+struct leg_lims {
+    seg_lims_t hip_lims;
+    seg_lims_t knee_lims;
+    seg_lims_t foot_lims;
 };
+typedef struct leg_lims leg_lims_t;
 
 class Leg {
     private:
-        Servo _hip;
-        Servo _knee;
-        Servo _foot;
+        Seg _hip;
+        Seg _knee;
+        Seg _foot;
+        Seg _segs[NUM_SEGS];
+        uint16_t test;
 
-        int _hip_fwd;
-        int _hip_bkd;
-        int _knee_lift;
-        int _knee_lower;
-        int _foot_lift;
-        int _foot_lower;
+        Seg& _get_seg(seg_index_t i);
 
     public:
     Leg();
-    void init(struct Leg_pins pins, struct Leg_seg_lims lims[NUM_SEGS]);
+    void init(ADA_pwm_t pwm_driver, leg_pins_t pins, leg_lims_t lims);
 
-    void set(int seg, float set);
-
-    void hip_fwd();
-    void hip_bkd();
-    void knee_lift();
-    void knee_lower();
-    void foot_lift();
-    void foot_lower();
-
-    void hip_relax();
-    void knee_relax();
-    void foot_relax();
-
-    void relax();
+    void set(seg_index_t seg, float set);
+    void setall(float hipset, float kneeset, float footset);
 };
 
 #endif // ROBORTOISE_LEG_H
